@@ -42,15 +42,11 @@
 </template>
 
 <script>
-import Datepicker from 'vuejs-datepicker'
 import db from '@/firebase'
 import moment from 'moment'
 
 export default {
 	name: 'meal-creator',
-	components: {
-		Datepicker
-	},
 	data: () => {
 		return {
 			valid: false,
