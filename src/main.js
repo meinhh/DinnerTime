@@ -3,14 +3,14 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import VueMaterial from 'vue-material'
+import Vuetify from 'vuetify'
 import VueFire from 'vuefire'
 
-import 'vue-material/dist/vue-material.css'
+import 'vuetify/dist/vuetify.min.css'
 
 Vue.config.productionTip = false
 
-Vue.use(VueMaterial)
+Vue.use(Vuetify)
 Vue.use(VueFire)
 
 /* eslint-disable no-new */
@@ -20,11 +20,4 @@ new Vue({
 	router,
 	template: '<App/>',
 	components: { App }
-})
-
-Vue.material.registerTheme('default', {
-	primary: 'pink',
-	accent: 'grey',
-	warn: 'orange',
-	background: 'white'
 })
