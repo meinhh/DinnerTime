@@ -12,7 +12,8 @@
 					<v-container grid-list-md>
 						<v-form v-model="valid" ref="form">
 							<v-layout wrap>
-								<v-flex xs-12>
+								<div v-if="!user">Log in to add a meal</div>
+								<v-flex xs-12 v-else>
 									<v-text-field v-model="name" :rules="[(v) => !!v || 'Name is required']" label="Name" hint="name of the event" required></v-text-field>
 									<v-menu lazy :close-on-content-click="false" v-model="dateMenu" transition="scale-transition" offset-y full-width :nudge-left="40" max-width="290px">
 										<v-text-field slot="activator" label="Date" v-model="date" prepend-icon="event"></v-text-field>
@@ -44,11 +45,13 @@
 <script>
 import db from '@/firebase'
 import moment from 'moment'
+import firebase from 'firebase'
 
 export default {
 	name: 'meal-creator',
 	data: () => {
 		return {
+			user: undefined,
 			valid: false,
 			dialog: false,
 			name: null,
@@ -60,6 +63,15 @@ export default {
 			time: null,
 			isDateAllowed: (date) => date.getTime() > moment().startOf('day')
 		}
+	},
+	beforeCreate: function() {
+		firebase.auth().onAuthStateChanged(function(user) {
+			if (user) {
+				this.user = user
+			} else {
+				this.user = undefined
+			}
+		}.bind(this))
 	},
 	firebase: {
 		meals: db.ref('meals')
@@ -82,7 +94,8 @@ export default {
 				name: this.name,
 				img: this.iconUrl,
 				info: this.info,
-				date: fullDate
+				date: fullDate,
+				creator: this.user.uid
 			})
 
 			this.close()
@@ -90,3 +103,7 @@ export default {
 	}
 }
 </script>
+
+<style scope>
+
+</style>
